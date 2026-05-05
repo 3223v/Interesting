@@ -1,0 +1,85 @@
+{
+  "grounds": [
+    {
+      "id": "ground-1777962014620-9kddt",
+      "name": "新工作空间",
+      "description": "",
+      "default_url": "",
+      "default_key": "",
+      "default_model": "deepseek-reasoner",
+      "knowledge": [
+        "knowledge-4"
+      ],
+      "rule": [],
+      "role": [
+        {
+          "id": "role-1777963404060-x65w9",
+          "kind": "role",
+          "name": "新角色 1",
+          "description": "",
+          "use_prompt": "",
+          "system_prompt": "",
+          "canvas_position": {
+            "x": 166.5,
+            "y": 103
+          },
+          "url": "https://api.deepseek.com/",
+          "key": "",
+          "model": "deepseek-reasoner",
+          "temperature": 0.7,
+          "knowledge_private": [
+            "但是v"
+          ],
+          "knowledge_public": [],
+          "blocked_role_names": [],
+          "unknown_role_names": [],
+          "inbox": [],
+          "redundancy": 0,
+          "status": "active",
+          "enabled": true,
+          "last_think": "",
+          "last_error": ""
+        }
+      ],
+      "round": [],
+      "simulation": {
+        "batch_size": 10,
+        "current_batch_index": 0,
+        "max_round_history": 50,
+        "mode": "auto",
+        "round_goal": ""
+      },
+      "workflow": {
+        "pending_plan": null,
+        "pending_judgement": null
+      },
+      "createdAt": "2026-05-05",
+      "updatedAt": "2026-05-05"
+    },
+    {
+      "id": "ground-1777963417350-52kqn",
+      "name": "新工作空间",
+      "description": "",
+      "default_url": "",
+      "default_key": "",
+      "default_model": "deepseek-reasoner",
+      "knowledge": [],
+      "rule": [],
+      "role": [],
+      "round": [],
+      "simulation": {
+        "batch_size": 10,
+        "current_batch_index": 0,
+        "max_round_history": 50,
+        "mode": "auto",
+        "round_goal": ""
+      },
+      "workflow": {
+        "pending_plan": null,
+        "pending_judgement": null
+      },
+      "createdAt": "2026-05-05",
+      "updatedAt": "2026-05-05"
+    }
+  ]
+}

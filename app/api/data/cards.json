@@ -1,0 +1,20 @@
+{
+  "cards": [
+    {
+      "spec": "chara_card_v3",
+      "spec_version": "3.0",
+      "data": {
+        "name": "是",
+        "description": "是",
+        "tags": [],
+        "system_prompt": "",
+        "post_history_instructions": "",
+        "first_mes": "",
+        "alternate_greetings": [],
+        "personality": "",
+        "scenario": "",
+        "creator_notes": ""
+      }
+    }
+  ]
+}

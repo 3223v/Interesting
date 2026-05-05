@@ -1,0 +1,32 @@
+{
+  "roles": [
+    {
+      "id": "role-1777961096124-vjrlw",
+      "kind": "role",
+      "name": "新角色 1",
+      "description": "",
+      "use_prompt": "",
+      "system_prompt": "",
+      "canvas_position": {
+        "x": 166.5,
+        "y": 103
+      },
+      "url": "https://api.deepseek.com/",
+      "key": "",
+      "model": "deepseek-reasoner",
+      "temperature": 0.7,
+      "knowledge_private": [
+        "但是v"
+      ],
+      "knowledge_public": [],
+      "blocked_role_names": [],
+      "unknown_role_names": [],
+      "inbox": [],
+      "redundancy": 0,
+      "status": "active",
+      "enabled": true,
+      "last_think": "",
+      "last_error": ""
+    }
+  ]
+}
