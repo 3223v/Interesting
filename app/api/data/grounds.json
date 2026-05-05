@@ -115,6 +115,33 @@
       },
       "createdAt": "2026-05-05",
       "updatedAt": "2026-05-05"
+    },
+    {
+      "id": "ground-1777986400837-ft2bc",
+      "name": "guizeces",
+      "description": "",
+      "default_url": "",
+      "default_key": "",
+      "default_model": "deepseek-reasoner",
+      "knowledge": [],
+      "rule": [
+        "必须用中文交流"
+      ],
+      "role": [],
+      "round": [],
+      "simulation": {
+        "batch_size": 10,
+        "current_batch_index": 0,
+        "max_round_history": 50,
+        "mode": "auto",
+        "round_goal": ""
+      },
+      "workflow": {
+        "pending_plan": null,
+        "pending_judgement": null
+      },
+      "createdAt": "2026-05-05",
+      "updatedAt": "2026-05-05"
     }
   ]
 }

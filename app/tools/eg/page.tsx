@@ -307,11 +307,11 @@ export default function Page() {
   };
 
   const handleAddRule = (rule: Rule) => {
-    if (editGround.rule.includes(rule.id)) {
+    if (editGround.rule.includes(rule.content)) {
       alert('该规则已添加到工作空间中');
       return;
     }
-    const updated = { ...editGround, rule: [...editGround.rule, rule.id] };
+    const updated = { ...editGround, rule: [...editGround.rule, rule.content] };
     setEditGround(updated);
     scheduleAutoSave(updated);
   };
@@ -944,12 +944,13 @@ export default function Page() {
 
             <FieldGroup label={`规则 (rule) - ${editGround.rule?.length || 0} 个`}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {editGround.rule?.map((ruleId) => {
-                  const rule = getRuleById(ruleId);
-                  const isExpanded = expandedRules.has(ruleId);
+                {editGround.rule?.map((ruleContent, index) => {
+                  const rule = availableRules.find(r => r.content === ruleContent);
+                  const isExpanded = expandedRules.has(`rule-${index}`);
+                  const contentPreview = ruleContent.length > 30 ? ruleContent.substring(0, 30) + '...' : ruleContent;
                   return (
                     <div
-                      key={ruleId}
+                      key={`rule-${index}`}
                       style={{
                         padding: '12px 16px',
                         background: 'rgba(107, 255, 184, 0.08)',
@@ -960,31 +961,29 @@ export default function Page() {
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div>
                           <div style={{ fontSize: '13px', fontWeight: 600, color: '#d0d0d0', marginBottom: '2px' }}>
-                            {rule?.name || ruleId}
+                            {rule?.name || contentPreview}
                           </div>
                           <div style={{ fontSize: '11px', color: '#666' }}>
                             {rule?.description || '无描述'} | 优先级: {rule?.priority || 100}
                           </div>
                         </div>
                         <div style={{ display: 'flex', gap: '8px' }}>
-                          {rule?.content && (
-                            <button
-                              onClick={() => toggleRuleExpand(ruleId)}
-                              style={{
-                                padding: '4px 10px',
-                                background: 'rgba(107, 255, 184, 0.1)',
-                                border: '1px solid rgba(107, 255, 184, 0.2)',
-                                borderRadius: '6px',
-                                color: '#6bffb8',
-                                fontSize: '11px',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              {isExpanded ? '收起' : '查看内容'}
-                            </button>
-                          )}
                           <button
-                            onClick={() => handleRemoveRule(ruleId)}
+                            onClick={() => toggleRuleExpand(`rule-${index}`)}
+                            style={{
+                              padding: '4px 10px',
+                              background: 'rgba(107, 255, 184, 0.1)',
+                              border: '1px solid rgba(107, 255, 184, 0.2)',
+                              borderRadius: '6px',
+                              color: '#6bffb8',
+                              fontSize: '11px',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            {isExpanded ? '收起' : '查看内容'}
+                          </button>
+                          <button
+                            onClick={() => handleRemoveRule(ruleContent)}
                             style={{
                               padding: '4px 10px',
                               background: 'rgba(255,80,80,0.1)',
@@ -999,7 +998,7 @@ export default function Page() {
                           </button>
                         </div>
                       </div>
-                      {isExpanded && rule?.content && (
+                      {isExpanded && (
                         <div style={{
                           marginTop: '12px',
                           padding: '10px 12px',
@@ -1011,7 +1010,7 @@ export default function Page() {
                           maxHeight: '150px',
                           overflowY: 'auto'
                         }}>
-                          {rule.content}
+                          {ruleContent}
                         </div>
                       )}
                     </div>
@@ -1319,10 +1318,10 @@ export default function Page() {
                       key={rule.id}
                       style={{
                         padding: '14px 16px',
-                        background: editGround.rule.includes(rule.id)
+                        background: editGround.rule.includes(rule.content)
                           ? 'rgba(107, 255, 184, 0.15)'
                           : 'rgba(255,255,255,0.03)',
-                        border: editGround.rule.includes(rule.id)
+                        border: editGround.rule.includes(rule.content)
                           ? '1px solid rgba(107, 255, 184, 0.3)'
                           : '1px solid rgba(255,255,255,0.08)',
                         borderRadius: '10px',
@@ -1339,7 +1338,7 @@ export default function Page() {
                           {rule.description || '无描述'} | 优先级: {rule.priority}
                         </div>
                       </div>
-                      {editGround.rule.includes(rule.id) ? (
+                      {editGround.rule.includes(rule.content) ? (
                         <span style={{ fontSize: '12px', color: '#6bffb8', padding: '4px 12px', background: 'rgba(107, 255, 184, 0.15)', borderRadius: '12px' }}>
                           已添加
                         </span>
