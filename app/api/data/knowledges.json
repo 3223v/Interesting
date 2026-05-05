@@ -4,7 +4,7 @@
       "id": "knowledge-1",
       "title": "公司简介",
       "content": "我们是一家专注于人工智能技术研发的创新企业，致力于为企业提供智能化解决方案。公司成立于2020年，总部位于北京。",
-      "tags": ["公司", "简介", "AI"],
+      "tags": [],
       "category": "公司信息",
       "enabled": true
     },
@@ -12,7 +12,11 @@
       "id": "knowledge-2",
       "title": "产品说明",
       "content": "我们的核心产品包括智能客服系统、数据分析平台和自动化工作流引擎。所有产品均支持API接口对接。",
-      "tags": ["产品", "API", "客服"],
+      "tags": [
+        "产品",
+        "API",
+        "客服"
+      ],
       "category": "产品信息",
       "enabled": true
     },
@@ -20,7 +24,11 @@
       "id": "knowledge-3",
       "title": "常见问题",
       "content": "Q: 如何申请试用？\nA: 请访问官网填写申请表单，我们会在24小时内联系您。\n\nQ: 是否支持定制开发？\nA: 是的，我们提供定制化解决方案服务。",
-      "tags": ["FAQ", "问题", "支持"],
+      "tags": [
+        "FAQ",
+        "问题",
+        "支持"
+      ],
       "category": "帮助中心",
       "enabled": true
     },
@@ -28,7 +36,11 @@
       "id": "knowledge-4",
       "title": "技术文档",
       "content": "API基础地址: https://api.example.com/v1\n认证方式: API Key\n请求格式: JSON\n响应格式: JSON",
-      "tags": ["技术", "API", "文档"],
+      "tags": [
+        "技术",
+        "API",
+        "文档"
+      ],
       "category": "技术支持",
       "enabled": true
     },
@@ -36,7 +48,11 @@
       "id": "knowledge-5",
       "title": "服务条款",
       "content": "用户在使用本服务前需仔细阅读并同意服务条款。服务提供方保留随时修改条款的权利。",
-      "tags": ["条款", "法律", "服务"],
+      "tags": [
+        "条款",
+        "法律",
+        "服务"
+      ],
       "category": "法律信息",
       "enabled": false
     }

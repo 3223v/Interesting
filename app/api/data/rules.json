@@ -1,0 +1,12 @@
+{
+  "rules": [
+    {
+      "id": "rule-1777971566101-oqbki",
+      "name": "语言限制",
+      "description": "语言限制",
+      "content": "必须用中文交流",
+      "priority": 100,
+      "enabled": true
+    }
+  ]
+}

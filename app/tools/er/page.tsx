@@ -125,6 +125,87 @@ export default function Page() {
     scheduleAutoSave(updated);
   };
 
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importJsonText, setImportJsonText] = useState('');
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'error'>('idle');
+
+  const handleExportJson = () => {
+    if (selectedIndex === null || !editRole) {
+      alert('请先选择一个角色');
+      return;
+    }
+    const dataStr = JSON.stringify(editRole, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${editRole.name || 'role'}_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleCopyJson = async () => {
+    if (selectedIndex === null || !editRole) {
+      alert('请先选择一个角色');
+      return;
+    }
+    try {
+      const dataStr = JSON.stringify(editRole, null, 2);
+      await navigator.clipboard.writeText(dataStr);
+      setCopyStatus('copied');
+      setTimeout(() => setCopyStatus('idle'), 2000);
+    } catch {
+      setCopyStatus('error');
+      setTimeout(() => setCopyStatus('idle'), 2000);
+    }
+  };
+
+  const handleImportJson = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const importedRole = JSON.parse(event.target?.result as string);
+        processImportedRole(importedRole);
+      } catch {
+        alert('无法解析 JSON 文件');
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  const handleImportFromText = () => {
+    if (!importJsonText.trim()) {
+      alert('请输入 JSON 文本');
+      return;
+    }
+    try {
+      const importedRole = JSON.parse(importJsonText);
+      processImportedRole(importedRole);
+      setShowImportModal(false);
+      setImportJsonText('');
+    } catch {
+      alert('无法解析 JSON 文本');
+    }
+  };
+
+  const processImportedRole = (importedRole: unknown) => {
+    if (importedRole && typeof importedRole === 'object' && !Array.isArray(importedRole)) {
+      const newRole = importedRole as RoleData;
+      const newId = `role-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+      newRole.id = newId;
+      const updatedRoles = [...roles, newRole];
+      setRoles(updatedRoles);
+      setSelectedIndex(updatedRoles.length - 1);
+      setEditRole(newRole);
+      saveRoles(updatedRoles);
+    } else {
+      alert('无效的 JSON 格式');
+    }
+  };
+
   const handleAddRole = () => {
     const newRole = emptyRole();
     newRole.name = `新角色 ${roles.length + 1}`;
@@ -358,8 +439,185 @@ export default function Page() {
               >
                 保存
               </button>
+              <button
+                onClick={handleExportJson}
+                style={{
+                  padding: '8px 16px',
+                  background: 'rgba(107, 157, 255, 0.15)',
+                  border: '1px solid rgba(107, 157, 255, 0.3)',
+                  borderRadius: '8px',
+                  color: '#6b9dff',
+                  fontSize: '13px',
+                  cursor: 'pointer'
+                }}
+              >
+                导出 JSON
+              </button>
+              <button
+                onClick={handleCopyJson}
+                style={{
+                  padding: '8px 16px',
+                  background: 'rgba(107, 255, 184, 0.15)',
+                  border: '1px solid rgba(107, 255, 184, 0.3)',
+                  borderRadius: '8px',
+                  color: '#6bffb8',
+                  fontSize: '13px',
+                  cursor: 'pointer'
+                }}
+              >
+                {copyStatus === 'copied' ? '✓ 已复制' : copyStatus === 'error' ? '复制失败' : '复制 JSON'}
+              </button>
+              <button
+                onClick={() => setShowImportModal(true)}
+                style={{
+                  padding: '8px 16px',
+                  background: 'rgba(196, 76, 255, 0.15)',
+                  border: '1px solid rgba(196, 76, 255, 0.3)',
+                  borderRadius: '8px',
+                  color: '#c44cff',
+                  fontSize: '13px',
+                  cursor: 'pointer'
+                }}
+              >
+                导入 JSON
+              </button>
             </div>
           </header>
+
+          {showImportModal && (
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0,0,0,0.8)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000
+            }}>
+              <div style={{
+                background: '#1a1a2e',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '12px',
+                padding: '24px',
+                width: '90%',
+                maxWidth: '600px',
+                maxHeight: '80vh',
+                overflow: 'auto'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '16px'
+                }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#fff' }}>
+                    导入 JSON
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setShowImportModal(false);
+                      setImportJsonText('');
+                    }}
+                    style={{
+                      padding: '6px 12px',
+                      background: 'rgba(255,255,255,0.1)',
+                      border: 'none',
+                      borderRadius: '6px',
+                      color: '#888',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    关闭
+                  </button>
+                </div>
+
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={{
+                    display: 'inline-block',
+                    padding: '8px 16px',
+                    background: 'rgba(196, 76, 255, 0.15)',
+                    border: '1px solid rgba(196, 76, 255, 0.3)',
+                    borderRadius: '8px',
+                    color: '#c44cff',
+                    fontSize: '13px',
+                    cursor: 'pointer',
+                    marginBottom: '8px'
+                  }}>
+                    选择 JSON 文件
+                    <input
+                      type="file"
+                      accept=".json"
+                      onChange={(e) => {
+                        handleImportJson(e);
+                        setShowImportModal(false);
+                      }}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                  <p style={{ fontSize: '12px', color: '#666' }}>或</p>
+                </div>
+
+                <textarea
+                  value={importJsonText}
+                  onChange={(e) => setImportJsonText(e.target.value)}
+                  placeholder='粘贴 JSON 文本...'
+                  style={{
+                    width: '100%',
+                    minHeight: '200px',
+                    padding: '12px',
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '8px',
+                    color: '#e0e0e0',
+                    fontSize: '13px',
+                    fontFamily: 'monospace',
+                    resize: 'vertical',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                    marginBottom: '16px'
+                  }}
+                />
+
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+                  <button
+                    onClick={() => {
+                      setShowImportModal(false);
+                      setImportJsonText('');
+                    }}
+                    style={{
+                      padding: '8px 16px',
+                      background: 'rgba(255,255,255,0.1)',
+                      border: 'none',
+                      borderRadius: '8px',
+                      color: '#888',
+                      fontSize: '13px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    取消
+                  </button>
+                  <button
+                    onClick={handleImportFromText}
+                    style={{
+                      padding: '8px 16px',
+                      background: 'linear-gradient(135deg, #6bffb8, #6b9dff)',
+                      border: 'none',
+                      borderRadius: '8px',
+                      color: '#0a0a0f',
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    确认导入
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div style={{ flex: 1, overflowY: 'auto', padding: '24px' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
@@ -367,7 +625,7 @@ export default function Page() {
                 <select
                   value={editRole.model}
                   onChange={(e) => handleFieldChange('model', e.target.value)}
-                  style={inputStyle}
+                  style={selectStyle}
                 >
                   <option value="deepseek-reasoner">deepseek-reasoner</option>
                   <option value="deepseek-chat">deepseek-chat</option>
@@ -455,7 +713,7 @@ export default function Page() {
                 <select
                   value={editRole.status}
                   onChange={(e) => handleFieldChange('status', e.target.value)}
-                  style={inputStyle}
+                  style={selectStyle}
                 >
                   <option value="active">active</option>
                   <option value="inactive">inactive</option>
@@ -512,14 +770,24 @@ function FieldGroup({ label, children }: { label: string; children: React.ReactN
 const inputStyle: React.CSSProperties = {
   width: '100%',
   padding: '12px 14px',
-  background: 'rgba(255,255,255,0.03)',
-  border: '1px solid rgba(255,255,255,0.08)',
+  background: 'rgba(255,255,255,0.05)',
+  border: '1px solid rgba(255,255,255,0.15)',
   borderRadius: '10px',
-  color: '#d0d0d0',
+  color: '#e0e0e0',
   fontSize: '13px',
   outline: 'none',
   fontFamily: 'inherit',
-  boxSizing: 'border-box'
+  boxSizing: 'border-box',
+  cursor: 'pointer'
+};
+
+const selectStyle: React.CSSProperties = {
+  ...inputStyle,
+  appearance: 'none',
+  backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23888\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpolyline points=\'6 9 12 15 18 9\'%3E%3C/polyline%3E%3C/svg%3E")',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'right 12px center',
+  backgroundSize: '16px'
 };
 
 const textareaStyle: React.CSSProperties = {

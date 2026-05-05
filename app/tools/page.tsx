@@ -34,14 +34,14 @@ interface GroundsStore {
 }
 
 const toolList = [
-  { path: '/tools/edit', name: '角色卡片', desc: '编辑角色卡片', color: '#c44cff', bg: 'rgba(196, 76, 255, 0.1)' },
-  { path: '/tools/ec', name: '角色卡管理', desc: '管理角色卡片', color: '#ff6b9d', bg: 'rgba(255, 107, 157, 0.1)' },
-  { path: '/tools/er', name: '角色编辑', desc: '编辑角色配置', color: '#c44cff', bg: 'rgba(196, 76, 255, 0.1)' },
+  { path: '/tools/ec', name: '酒馆卡片编辑', desc: '编辑酒馆角色卡片', color: '#ff6b9d', bg: 'rgba(255, 107, 157, 0.1)' },
+  { path: '/tools/er', name: 'xtplay角色编辑', desc: '编辑xtplay角色配置', color: '#c44cff', bg: 'rgba(196, 76, 255, 0.1)' },
   { path: '/tools/el', name: 'Lorebook', desc: '编辑Lorebook', color: '#6bffb8', bg: 'rgba(107, 255, 184, 0.1)' },
-  { path: '/tools/eg', name: '工作空间', desc: '管理工作空间', color: '#6b9dff', bg: 'rgba(107, 157, 255, 0.1)' },
-  { path: '/tools/eu', name: '规则管理', desc: '管理规则', color: '#6bffb8', bg: 'rgba(107, 255, 184, 0.1)' },
-  { path: '/tools/ek', name: '知识库', desc: '管理知识库', color: '#6b9dff', bg: 'rgba(107, 157, 255, 0.1)' },
-  { path: '/tools/r2x', name: '数据映射', desc: 'JSON数据映射工具', color: '#ffb86b', bg: 'rgba(255, 184, 107, 0.1)' },
+  { path: '/tools/eg', name: 'ground管理', desc: '管理工作空间', color: '#6b9dff', bg: 'rgba(107, 157, 255, 0.1)' },
+  { path: '/tools/eu', name: '规则管理', desc: '管理xtplay规则', color: '#6bffb8', bg: 'rgba(107, 255, 184, 0.1)' },
+  { path: '/tools/ek', name: '知识库管理', desc: '管理xtplay知识库', color: '#6b9dff', bg: 'rgba(107, 157, 255, 0.1)' },
+  { path: '/tools/r2x', name: '酒馆卡片映射为xtplay角色', desc: 'JSON数据映射工具', color: '#ffb86b', bg: 'rgba(255, 184, 107, 0.1)' },
+    { path: '/tools/e2c', name: 'Json翻译', desc: 'JSON数据翻译工具', color: '#ffb86b', bg: 'rgba(255, 184, 107, 0.1)' }
 ];
 
 export default function ToolsIndex() {
@@ -90,31 +90,112 @@ export default function ToolsIndex() {
       background: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0f0f1a 100%)',
       fontFamily: '"SF Mono", "Fira Code", "JetBrains Mono", monospace',
       color: '#e0e0e0',
-      padding: '24px'
+      display: 'flex'
     }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        <header style={{
-          marginBottom: '32px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
+      <aside style={{
+        width: '200px',
+        background: 'rgba(0,0,0,0.3)',
+        borderRight: '1px solid rgba(255,255,255,0.08)',
+        padding: '16px',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <div style={{
+          padding: '16px',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          marginBottom: '16px'
         }}>
-          <div>
-            <h1 style={{
-              fontSize: '28px',
-              fontWeight: 700,
-              background: 'linear-gradient(90deg, #ff6b9d, #c44cff, #6b9dff)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              marginBottom: '8px'
-            }}>
-              工具中心
-            </h1>
-            <p style={{ fontSize: '14px', color: '#888' }}>
-              数据管理工具集
-            </p>
+          <h1 style={{
+            fontSize: '16px',
+            fontWeight: 700,
+            background: 'linear-gradient(90deg, #ff6b9d, #c44cff, #6b9dff)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}>
+            工具中心
+          </h1>
+        </div>
+        
+        <div style={{ flex: 1, overflowY: 'auto' }}>
+          <h2 style={{
+            fontSize: '11px',
+            fontWeight: 600,
+            color: '#666',
+            marginBottom: '12px',
+            textTransform: 'uppercase',
+            letterSpacing: '1px'
+          }}>
+            工具导航
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            {toolList.map((tool) => (
+              <a
+                key={tool.path}
+                href={tool.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  padding: '12px 14px',
+                  background: tool.bg,
+                  border: `1px solid ${tool.color}20`,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s',
+                  display: 'block'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = `${tool.color}50`;
+                  e.currentTarget.style.background = `${tool.color}10`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = `${tool.color}20`;
+                  e.currentTarget.style.background = tool.bg;
+                }}
+              >
+                <div style={{
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  color: tool.color,
+                  marginBottom: '2px'
+                }}>
+                  {tool.name}
+                </div>
+                <div style={{
+                  fontSize: '11px',
+                  color: '#666'
+                }}>
+                  {tool.desc}
+                </div>
+              </a>
+            ))}
           </div>
-          <div style={{ display: 'flex', gap: '12px' }}>
+        </div>
+      </aside>
+
+      <main style={{ flex: 1, overflow: 'auto', padding: '24px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <header style={{
+            marginBottom: '32px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <div>
+              <h1 style={{
+                fontSize: '28px',
+                fontWeight: 700,
+                background: 'linear-gradient(90deg, #ff6b9d, #c44cff, #6b9dff)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                marginBottom: '8px'
+              }}>
+                工作空间
+              </h1>
+              <p style={{ fontSize: '14px', color: '#888' }}>
+                管理和查看工作空间数据
+              </p>
+            </div>
             <button
               onClick={handleCopyGrounds}
               style={{
@@ -132,20 +213,7 @@ export default function ToolsIndex() {
             >
               {copyStatus === 'copied' ? '✓ 已复制' : '复制所有工作空间'}
             </button>
-          </div>
-        </header>
-
-        <section style={{ marginBottom: '40px' }}>
-          <h2 style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: '#888',
-            marginBottom: '16px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px'
-          }}>
-            工作空间 ({grounds.length})
-          </h2>
+          </header>
 
           {grounds.length === 0 ? (
             <div style={{
@@ -159,7 +227,7 @@ export default function ToolsIndex() {
               <div style={{ color: '#666', fontSize: '14px' }}>暂无工作空间</div>
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '16px', marginBottom: '40px' }}>
               {grounds.map((ground, index) => (
                 <div
                   key={ground.id}
@@ -238,92 +306,39 @@ export default function ToolsIndex() {
               ))}
             </div>
           )}
-        </section>
 
-        {selectedGround && (
-          <section style={{ marginBottom: '40px' }}>
-            <h2 style={{
-              fontSize: '16px',
-              fontWeight: 600,
-              color: '#888',
-              marginBottom: '16px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px'
-            }}>
-              选中的工作空间详情
-            </h2>
-            <div style={{
-              padding: '24px',
-              background: 'rgba(255,255,255,0.02)',
-              borderRadius: '14px',
-              border: '1px solid rgba(255,255,255,0.08)'
-            }}>
-              <pre style={{
-                fontSize: '12px',
+          {selectedGround && (
+            <section>
+              <h2 style={{
+                fontSize: '16px',
+                fontWeight: 600,
                 color: '#888',
-                overflow: 'auto',
-                maxHeight: '400px',
-                whiteSpace: 'pre-wrap'
+                marginBottom: '16px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
               }}>
-                {JSON.stringify(selectedGround, null, 2)}
-              </pre>
-            </div>
-          </section>
-        )}
-
-        <section>
-          <h2 style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: '#888',
-            marginBottom: '16px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px'
-          }}>
-            工具导航
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px' }}>
-            {toolList.map((tool) => (
-              <button
-                key={tool.path}
-                onClick={() => router.push(tool.path)}
-                style={{
-                  padding: '20px',
-                  background: tool.bg,
-                  border: `1px solid ${tool.color}30`,
-                  borderRadius: '12px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = `${tool.color}60`;
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = `${tool.color}30`;
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
-                <div style={{
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  color: tool.color,
-                  marginBottom: '6px'
-                }}>
-                  {tool.name}
-                </div>
-                <div style={{
+                工作空间详情
+              </h2>
+              <div style={{
+                padding: '24px',
+                background: 'rgba(255,255,255,0.02)',
+                borderRadius: '14px',
+                border: '1px solid rgba(255,255,255,0.08)'
+              }}>
+                <pre style={{
                   fontSize: '12px',
-                  color: '#888'
+                  color: '#888',
+                  overflow: 'auto',
+                  maxHeight: '500px',
+                  whiteSpace: 'pre-wrap'
                 }}>
-                  {tool.desc}
-                </div>
-              </button>
-            ))}
-          </div>
-        </section>
-      </div>
+                  {JSON.stringify(selectedGround, null, 2)}
+                </pre>
+              </div>
+            </section>
+          )}
+        </div>
+      </main>
 
       <style>{`
         ::-webkit-scrollbar { width: 6px; height: 6px; }

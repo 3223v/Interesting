@@ -82,7 +82,7 @@ export default function Page() {
     }, 1500);
   }, [rules, selectedIndex, saveRules]);
 
-  const handleFieldChange = (field: keyof Rule, value: string | number | boolean) => {
+  const handleFieldChange = <K extends keyof Rule>(field: K, value: Rule[K]) => {
     if (selectedIndex === null) return;
     const updated = { ...editRule, [field]: value };
     setEditRule(updated);
